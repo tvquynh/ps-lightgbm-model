@@ -1,7 +1,7 @@
 certifi==2020.6.20
 click==8.0.4
-colorama
-dataclasses
+colorama==0.4.5
+dataclasses==0.8
 Flask==2.0.3
 Flask-WTF==1.0.1
 gunicorn==20.1.0
