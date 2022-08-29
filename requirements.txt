@@ -1,7 +1,7 @@
 certifi==2020.6.20
 click==8.0.4
-colorama==0.4.5
-dataclasses==0.8
+colorama
+dataclasses
 Flask==2.0.3
 Flask-WTF==1.0.1
 gunicorn==20.1.0
@@ -10,7 +10,7 @@ importlib-resources==5.4.0
 itsdangerous==2.0.1
 Jinja2==3.0.3
 joblib==1.1.0
-lief==0.10.0
+lief
 lightgbm==3.3.2
 MarkupSafe==2.0.1
 numpy==1.19.5
