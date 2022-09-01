@@ -1,18 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+<title>PS-LightGBM Model Malware Detection</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
+<!--<script src="/static/js/jquery.form.js"></script>-->
 </head>
-<body>
-    <h1>PS-LightGBM Model Malware Detection</h1>
+    <body>
+        <div class="container">
+            <br />
+            <h3 align="center">Machine Learning for Malware Detection</h3>
+            <br />
+            <div class="panel panel-default">
+                <div class="panel-heading"><b>Master Thesis - Quynh Trinh. <br> Instructor - Hien Vu.</b></div>
+                <div class="panel-body">
+		     
+		     <div>Please upload Portable Executable file to analysis(.acm , .ax , .cpl , .dll , .drv , .efi , .exe , .mui , .ocx , .scr , .sys , .tsp)</div><br>
+                <form id="upload_form" enctype="multipart/form-data" method="post">
+                    <input type="file" name="file1" id="file1" onchange="uploadFile()"><br>
+                    <progress id="progressBar" value="0" max="100" style="width:65%;"></progress>
+                    <h3 id="status"></h3>
+                    <p id="loaded_n_total"></p>
+                </form>  
+                
+            </div>
+        </div>
+<script>
 
-    <form method='POST' enctype='multipart/form-data'>
-        {{form.hidden_tag()}}
-        {{form.file()}}
-        {{form.submit()}}
-    </form>
+function _(el) {
+  return document.getElementById(el);
+}
+
+function uploadFile() {
+  var file = _("file1").files[0];
+  // alert(file.name+" | "+file.size+" | "+file.type);
+  var formdata = new FormData();
+  formdata.append("file1", file);
+  var ajax = new XMLHttpRequest();
+  ajax.upload.addEventListener("progress", progressHandler, false);
+  ajax.addEventListener("load", completeHandler, false);
+  ajax.addEventListener("error", errorHandler, false);
+  ajax.addEventListener("abort", abortHandler, false);
+  ajax.open("POST", "{{ url_for('upload') }}"); // http://www.developphp.com/video/JavaScript/File-Upload-Progress-Bar-Meter-Tutorial-Ajax-PHP
+  //use file_upload_parser.php from above url
+  ajax.send(formdata);
+}
+
+function progressHandler(event) {
+  _("loaded_n_total").innerHTML = "Uploaded " + event.loaded + " bytes of " + event.total;
+  var percent = (event.loaded / event.total) * 100;
+  _("progressBar").value = Math.round(percent);
+  _("status").innerHTML = Math.round(percent) + '% uploaded. Please wait for analysis...<img src="/static/images/loader.gif" width="50" height="50"/>';
+}
+
+function completeHandler(event) {
+  _("status").innerHTML = event.target.responseText;
+  _("progressBar").value = 0; //wil clear progress bar after successful upload
+}
+
+function errorHandler(event) {
+  _("status").innerHTML = "Upload Failed";
+}
+
+function abortHandler(event) {
+  _("status").innerHTML = "Upload Aborted";
+}
+
+</script>
 </body>
 </html>
